@@ -36,7 +36,7 @@
       };
 
       var platforms = [
-  { x: 300, y: canvas.height - 160, width: 100, height: 20 },
+  { x: 300, y: canvas.height - 400, width: 100, height: 400 },
   { x: 500, y: canvas.height - 150, width: 100, height: 20 },
   { x: 700, y: canvas.height - 200, width: 100, height: 20 },
   { x: 900, y: canvas.height - 250, width: 100, height: 20 },
@@ -98,30 +98,37 @@
     }
 
     // colisão com os blocos azuis
-    for (var i = 0; i < platforms.length; i++) {
-        if (detectCollision(block, platforms[i])) {
-            var overlapX = Math.max(0, Math.min(block.x + block.width, platforms[i].x + platforms[i].width) - Math.max(block.x, platforms[i].x));
-            var overlapY = Math.max(0, Math.min(block.y + block.height, platforms[i].y + platforms[i].height) - Math.max(block.y, platforms[i].y));
-            if (overlapX >= overlapY) {
-    if (block.y < platforms[i].y) {
-        block.y = platforms[i].y - block.height;
-        block.jumping = false;
-        block.gravity = 5; // resetar a gravidade do bloco
-    } else if (block.y + block.height > platforms[i].y + platforms[i].height) {
-        block.y = platforms[i].y + platforms[i].height;
-    } else {
-        block.y = platforms[i].y + platforms[i].height - overlapY;
-        block.gravity = 0;
-    }
-} else {
-    if (block.x < platforms[i].x) {
-        block.x = platforms[i].x - block.width;
-    } else {
-        block.x = platforms[i].x + platforms[i].width;
-    }
-}
+for (var i = 0; i < platforms.length; i++) {
+    if (detectCollision(block, platforms[i])) {
+        var overlapX = Math.max(0, Math.min(block.x + block.width, platforms[i].x + platforms[i].width) - Math.max(block.x, platforms[i].x));
+        var overlapY = Math.max(0, Math.min(block.y + block.height, platforms[i].y + platforms[i].height) - Math.max(block.y, platforms[i].y));
+        if (overlapX >= overlapY) {
+            if (block.y < platforms[i].y) {
+                // Colisão superior
+                if (keys[38]) { // Verifica se o bloco está pulando
+                    block.y -= block.jumpSpeed;
+                    block.jumping = true;
+                } else {
+                    block.y = platforms[i].y - block.height;
+                    block.jumping = false;
+                    block.gravity = 5; // resetar a gravidade do bloco
+                }
+            } else if (block.y + block.height > platforms[i].y + platforms[i].height) {
+                block.y = platforms[i].y + platforms[i].height;
+            } else {
+                block.y = platforms[i].y + platforms[i].height - overlapY;
+                block.gravity = 0;
+            }
+        } else {
+            if (block.x < platforms[i].x) {
+                block.x = platforms[i].x - block.width;
+            } else {
+                block.x = platforms[i].x + platforms[i].width;
+            }
         }
     }
+}
+
 }
       
       function draw() {
