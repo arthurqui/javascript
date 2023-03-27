@@ -30,13 +30,13 @@
         height: 50,
         speed: 5,
         jumping: false,
-        jumpHeight: 150,
+        jumpHeight: 30,
         jumpSpeed: 10,
         gravity: 5
       };
 
       var platforms = [
-  { x: 300, y: canvas.height - 300, width: 100, height: 90 },
+  { x: 300, y: canvas.height - 160, width: 100, height: 20 },
   { x: 500, y: canvas.height - 150, width: 100, height: 20 },
   { x: 700, y: canvas.height - 200, width: 100, height: 20 },
   { x: 900, y: canvas.height - 250, width: 100, height: 20 },
@@ -56,66 +56,73 @@
       }
       
       function updateBlock() {
-        // movimentação horizontal
-        if (keys[37]) {
-          block.x -= block.speed;
-        }
-        if (keys[39]) {
-          block.x += block.speed;
-        }
-        
-        // gravidade
-        if (block.jumping) {
-          block.y -= block.jumpSpeed;
-          if (block.y <= canvas.height - block.jumpHeight) {
+    // movimentação horizontal
+    if (keys[37]) {
+        block.x -= block.speed;
+    }
+    if (keys[39]) {
+        block.x += block.speed;
+    }
+
+    // gravidade
+    if (block.jumping) {
+        block.y -= block.jumpSpeed;
+        if (block.y <= canvas.height - block.jumpHeight) {
             block.jumping = false;
-          }
-        } else {
-          block.y += block.gravity;
-          if (block.y + block.height >= canvas.height) {
+        }
+    } else {
+        block.y += block.gravity;
+        if (block.y + block.height >= canvas.height) {
             block.y = canvas.height - block.height;
             block.jumping = false;
-          }
         }
-        
-        // movimentação vertical
-        if (keys[38] && !block.jumping) {
-          block.jumping = true;
-        }
-        
-        // colisão nas laterais da tela
-        if (block.x < 0) {
-          block.x = 0;
-        }
-        if (block.y < 0) {
-          block.y = 0;
-        }
-        if (block.x + block.width > canvas.width) {
-          block.x = canvas.width - block.width;
-        }
-        if (block.y + block.height > canvas.height) {
-          block.y = canvas.height - block.height;
-        }
+    }
 
-       // colisão com os blocos azuis
-        for (var i = 0; i < platforms.length; i++) {
-          if (detectCollision(block, platforms[i])) {
-            if (block.y + block.height < platforms[i].y + block.speed) {
-              block.y = platforms[i].y - block.height;
-              block.jumping = false;
-            } else if (block.y < platforms[i].y + platforms[i].height &&
-                       block.x + block.width > platforms[i].x &&
-                       block.x < platforms[i].x + platforms[i].width) {
-              block.y = platforms[i].y - block.height;
-              block.jumping = false;
-            } else {
-              block.y = platforms[i].y + platforms[i].height;
-            }
-          }
+    // movimentação vertical
+    if (keys[38] && !block.jumping) {
+        block.jumping = true;
+    }
+
+    // colisão nas laterais da tela
+    if (block.x < 0) {
+        block.x = 0;
+    }
+    if (block.y < 0) {
+        block.y = 0;
+    }
+    if (block.x + block.width > canvas.width) {
+        block.x = canvas.width - block.width;
+    }
+    if (block.y + block.height > canvas.height) {
+        block.y = canvas.height - block.height;
+    }
+
+    // colisão com os blocos azuis
+    for (var i = 0; i < platforms.length; i++) {
+        if (detectCollision(block, platforms[i])) {
+            var overlapX = Math.max(0, Math.min(block.x + block.width, platforms[i].x + platforms[i].width) - Math.max(block.x, platforms[i].x));
+            var overlapY = Math.max(0, Math.min(block.y + block.height, platforms[i].y + platforms[i].height) - Math.max(block.y, platforms[i].y));
+            if (overlapX >= overlapY) {
+    if (block.y < platforms[i].y) {
+        block.y = platforms[i].y - block.height;
+        block.jumping = false;
+        block.gravity = 5; // resetar a gravidade do bloco
+    } else if (block.y + block.height > platforms[i].y + platforms[i].height) {
+        block.y = platforms[i].y + platforms[i].height;
+    } else {
+        block.y = platforms[i].y + platforms[i].height - overlapY;
+        block.gravity = 0;
+    }
+} else {
+    if (block.x < platforms[i].x) {
+        block.x = platforms[i].x - block.width;
+    } else {
+        block.x = platforms[i].x + platforms[i].width;
+    }
+}
         }
-
-
-      }
+    }
+}
       
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
