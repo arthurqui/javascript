@@ -28,9 +28,16 @@
         y: 10,
         width: 50,
         height: 50,
-        dx: 5,
-        dy: 5
+        speed: 5
       };
+      
+      var keys = [];
+      window.addEventListener("keydown", function(e) {
+        keys[e.keyCode] = true;
+      });
+      window.addEventListener("keyup", function(e) {
+        keys[e.keyCode] = false;
+      });
       
       function drawBlock() {
         ctx.fillStyle = "red";
@@ -38,16 +45,18 @@
       }
       
       function updateBlock() {
-        if (block.x + block.width > canvas.width || block.x < 0) {
-          block.dx = -block.dx;
+        if (keys[37]) {
+          block.x -= block.speed;
         }
-        
-        if (block.y + block.height > canvas.height || block.y < 0) {
-          block.dy = -block.dy;
+        if (keys[38]) {
+          block.y -= block.speed;
         }
-        
-        block.x += block.dx;
-        block.y += block.dy;
+        if (keys[39]) {
+          block.x += block.speed;
+        }
+        if (keys[40]) {
+          block.y += block.speed;
+        }
       }
       
       function draw() {
