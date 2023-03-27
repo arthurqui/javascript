@@ -34,6 +34,13 @@
         jumpSpeed: 10,
         gravity: 5
       };
+
+      var platforms = [
+  { x: 300, y: canvas.height - 100, width: 100, height: 20 },
+  { x: 500, y: canvas.height - 150, width: 100, height: 20 },
+  { x: 700, y: canvas.height - 200, width: 100, height: 20 },
+  { x: 900, y: canvas.height - 250, width: 100, height: 20 },
+];
       
       var keys = [];
       window.addEventListener("keydown", function(e) {
@@ -89,13 +96,44 @@
         if (block.y + block.height > canvas.height) {
           block.y = canvas.height - block.height;
         }
+
+        // colisão com os blocos azuis
+       for (var i = 0; i < platforms.length; i++) {
+         if (detectCollision(block, platforms[i])) {
+           if (block.y + block.height < platforms[i].y + block.speed) {
+             block.y = platforms[i].y - block.height;
+             block.jumping = false;
+           } else if (block.x + block.width > platforms[i].x &&
+                      block.x < platforms[i].x + platforms[i].width) {
+             block.y = platforms[i].y + platforms[i].height;
+           }
+         }
+       }
+
+
       }
       
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawBlock();
         updateBlock();
+        drawPlatforms();
+        updateBlock();
       }
+
+      function drawPlatforms() {
+  ctx.fillStyle = "blue";
+  for (var i = 0; i < platforms.length; i++) {
+    ctx.fillRect(platforms[i].x, platforms[i].y, platforms[i].width, platforms[i].height);
+  }
+}
+
+function detectCollision(rect1, rect2) {
+  return rect1.x < rect2.x + rect2.width &&
+         rect1.x + rect1.width > rect2.x &&
+         rect1.y < rect2.y + rect2.height &&
+         rect1.y + rect1.height > rect2.y;
+}
       
       setInterval(draw, 10);
     </script>
