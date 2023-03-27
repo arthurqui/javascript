@@ -25,10 +25,14 @@
       
       var block = {
         x: 10,
-        y: 10,
+        y: canvas.height - 60,
         width: 50,
         height: 50,
-        speed: 5
+        speed: 5,
+        jumping: false,
+        jumpHeight: 150,
+        jumpSpeed: 10,
+        gravity: 5
       };
       
       var keys = [];
@@ -45,17 +49,31 @@
       }
       
       function updateBlock() {
+        // movimentação horizontal
         if (keys[37]) {
           block.x -= block.speed;
-        }
-        if (keys[38]) {
-          block.y -= block.speed;
         }
         if (keys[39]) {
           block.x += block.speed;
         }
-        if (keys[40]) {
-          block.y += block.speed;
+        
+        // gravidade
+        if (block.jumping) {
+          block.y -= block.jumpSpeed;
+          if (block.y <= canvas.height - block.jumpHeight) {
+            block.jumping = false;
+          }
+        } else {
+          block.y += block.gravity;
+          if (block.y + block.height >= canvas.height) {
+            block.y = canvas.height - block.height;
+            block.jumping = false;
+          }
+        }
+        
+        // movimentação vertical
+        if (keys[38] && !block.jumping) {
+          block.jumping = true;
         }
         
         // colisão nas laterais da tela
