@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Meu jogo simples</title>
+    <style>
+      /* CSS inline */
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script>
+      // JavaScript inline
+      var canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
+      var block = {
+        x: 10,
+        y: 10,
+        width: 50,
+        height: 50,
+        dx: 5,
+        dy: 5
+      };
+      
+      function drawBlock() {
+        ctx.fillStyle = "red";
+        ctx.fillRect(block.x, block.y, block.width, block.height);
+      }
+      
+      function updateBlock() {
+        if (block.x + block.width > canvas.width || block.x < 0) {
+          block.dx = -block.dx;
+        }
+        
+        if (block.y + block.height > canvas.height || block.y < 0) {
+          block.dy = -block.dy;
+        }
+        
+        block.x += block.dx;
+        block.y += block.dy;
+      }
+      
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBlock();
+        updateBlock();
+      }
+      
+      setInterval(draw, 10);
+    </script>
+  </body>
+</html>
