@@ -57,6 +57,20 @@
         if (keys[40]) {
           block.y += block.speed;
         }
+        
+        // colisão nas laterais da tela
+        if (block.x < 0) {
+          block.x = 0;
+        }
+        if (block.y < 0) {
+          block.y = 0;
+        }
+        if (block.x + block.width > canvas.width) {
+          block.x = canvas.width - block.width;
+        }
+        if (block.y + block.height > canvas.height) {
+          block.y = canvas.height - block.height;
+        }
       }
       
       function draw() {
