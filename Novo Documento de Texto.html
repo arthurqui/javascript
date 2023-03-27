@@ -36,7 +36,7 @@
       };
 
       var platforms = [
-  { x: 300, y: canvas.height - 100, width: 100, height: 20 },
+  { x: 300, y: canvas.height - 300, width: 100, height: 90 },
   { x: 500, y: canvas.height - 150, width: 100, height: 20 },
   { x: 700, y: canvas.height - 200, width: 100, height: 20 },
   { x: 900, y: canvas.height - 250, width: 100, height: 20 },
@@ -97,18 +97,22 @@
           block.y = canvas.height - block.height;
         }
 
-        // colisão com os blocos azuis
-       for (var i = 0; i < platforms.length; i++) {
-         if (detectCollision(block, platforms[i])) {
-           if (block.y + block.height < platforms[i].y + block.speed) {
-             block.y = platforms[i].y - block.height;
-             block.jumping = false;
-           } else if (block.x + block.width > platforms[i].x &&
-                      block.x < platforms[i].x + platforms[i].width) {
-             block.y = platforms[i].y + platforms[i].height;
-           }
-         }
-       }
+       // colisão com os blocos azuis
+        for (var i = 0; i < platforms.length; i++) {
+          if (detectCollision(block, platforms[i])) {
+            if (block.y + block.height < platforms[i].y + block.speed) {
+              block.y = platforms[i].y - block.height;
+              block.jumping = false;
+            } else if (block.y < platforms[i].y + platforms[i].height &&
+                       block.x + block.width > platforms[i].x &&
+                       block.x < platforms[i].x + platforms[i].width) {
+              block.y = platforms[i].y - block.height;
+              block.jumping = false;
+            } else {
+              block.y = platforms[i].y + platforms[i].height;
+            }
+          }
+        }
 
 
       }
@@ -118,7 +122,6 @@
         drawBlock();
         updateBlock();
         drawPlatforms();
-        updateBlock();
       }
 
       function drawPlatforms() {
