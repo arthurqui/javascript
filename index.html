@@ -19,7 +19,7 @@
       display: block;
       position: absolute;
       top: 50%;
-      left: 50%;
+      left: 150%; /*alterar para mudar a posição do objeto na tela*/
       transform: translate(-50%, -50%);
       z-index: 9999;
       }
@@ -44,24 +44,28 @@
       var ctx = canvas.getContext("2d");
       canvas.width = window.innerWidth *2;
       canvas.height = window.innerHeight;
+      var canvasWidth = canvas.width;
+      var canvasHeight = canvas.height;
       
       var block = {
         x: 10,
         y: canvas.height - 60,
-        width: 100,
-        height: 150,
-        speed: 5,
+        width: canvasWidth/30,
+        height: canvasHeight/6,
+        speed: canvasWidth/200,
         jumping: false,
         jumpHeight: 30,
-        jumpSpeed: 10,
-        gravity: 5
+        jumpSpeed: canvasWidth/200,
+        gravity: canvasWidth/200
       };
 
-      var platforms = [
-  { x: 300, y: canvas.height - 400, width: 100, height: 400 },
-  { x: 500, y: canvas.height - 150, width: 100, height: 20 },
-  { x: 700, y: canvas.height - 200, width: 100, height: 20 },
-  { x: 900, y: canvas.height - 250, width: 100, height: 20 },
+      
+
+var platforms = [
+  { x: canvasWidth * 0.3, y: canvasHeight * 0.2, width: canvasWidth * 0.1, height: canvasHeight * 0.8 },
+  { x: canvasWidth * 0.5, y: canvasHeight * 0.8, width: canvasWidth * 0.1, height: canvasHeight * 0.03 },
+  { x: canvasWidth * 0.7, y: canvasHeight * 0.75, width: canvasWidth * 0.1, height: canvasHeight * 0.03 },
+  { x: canvasWidth * 0.9, y: canvasHeight * 0.7, width: canvasWidth * 0.1, height: canvasHeight * 0.03 },
 ];
       
       var keys = [];
@@ -74,14 +78,14 @@
       });
       
       function drawBlock() {
-  if (keys[38] && block.jumping) {
+  if (keys[38] && keys[39] && !keys[37] && !block.jumping) {
     ctx.drawImage(img, block.x, block.y, block.width, block.height);
   } else if (keys[40] && !block.jumping) {
     ctx.drawImage(img, block.x, block.y, block.width, block.height);
+  } else if (keys[38]  &&  keys[37] && !keys[39] && !block.jumping) {
+    ctx.drawImage(img2, block.x, block.y, block.width, block.height);
   } else if (keys[37] && !keys[39]) {
     ctx.drawImage(img2, block.x, block.y, block.width, block.height);
-  } else if (keys[39] && !keys[37]) {
-    ctx.drawImage(img, block.x, block.y, block.width, block.height);
   } else if (keys[39] && !keys[37]) {
     ctx.drawImage(img, block.x, block.y, block.width, block.height);
   } else {
