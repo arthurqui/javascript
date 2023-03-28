@@ -46,8 +46,8 @@
       var block = {
         x: 10,
         y: canvas.height - 60,
-        width: 50,
-        height: 50,
+        width: 100,
+        height: 150,
         speed: 5,
         jumping: false,
         jumpHeight: 30,
@@ -78,6 +78,8 @@
     ctx.drawImage(img, block.x, block.y, block.width, block.height);
   } else if (keys[37] && !keys[39]) {
     ctx.drawImage(img2, block.x, block.y, block.width, block.height);
+  } else if (keys[39] && !keys[37]) {
+    ctx.drawImage(img, block.x, block.y, block.width, block.height);
   } else if (keys[39] && !keys[37]) {
     ctx.drawImage(img, block.x, block.y, block.width, block.height);
   } else {
