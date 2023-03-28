@@ -25,7 +25,7 @@
   </head>
   <body>
     <canvas id="canvas"></canvas>
-    <img id="imagem" src="https://www.pcspecialist.ie/forums/attachments/8c8553fd-4717-4ed1-beb9-5d17dc4f8d91-gif.30456/" style="display:none">
+    <img id="imagem" src="https://www.pcspecialist.ie/forums/attachments/8c8553fd-4717-4ed1-beb9-5d17dc4f8d91-gif.30456/" style="display:none">  <!--Imagem que vai aparecer no meio da tela-->
     <script>
       // JavaScript inline
       var canvas = document.getElementById("canvas");
@@ -55,6 +55,7 @@
       var keys = [];
       window.addEventListener("keydown", function(e) {
         keys[e.keyCode] = true;
+        document.getElementById("imagem").style.display = "none"; //comando que remove a imagem da tela
       });
       window.addEventListener("keyup", function(e) {
         keys[e.keyCode] = false;
@@ -130,7 +131,8 @@ for (var i = 0; i < platforms.length; i++) {
         
         if (overlapX >= overlapY) {
             if (block.y < platforms[i].y) {
-              document.getElementById("imagem").style.display = "block";
+              document.getElementById("imagem").style.display = "block"; // comando que coloca a imagem na tela
+              
                 // Colisão superior
                 if (keys[38]) { // Verifica se o bloco está pulando
                     block.y -= block.jumpSpeed;
