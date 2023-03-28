@@ -8,9 +8,11 @@
       body {
         margin: 0;
         padding: 0;
+        overflow: hidden;
       }
       canvas {
         display: block;
+        overflow: hidden;
       }
 
       #imagem {
@@ -29,18 +31,18 @@
     <script>
       // JavaScript inline
 
-      var img = new Image(); //imagem que vai aparecer no bloco movel
+      var img = new Image(); //imagem 1 que vai aparecer no bloco movel (front walk)
       img.src = 'https://media.discordapp.net/attachments/404353366106570768/1090347044532666398/7543d5ee-de97-4438-80b9-93852a99b3d3.png';
 
-      var img2 = new Image(); //imagem que vai aparecer no bloco movel
+      var img2 = new Image(); //imagem 2 que vai aparecer no bloco movel (back walk)
       img2.src = 'https://media.discordapp.net/attachments/404353366106570768/1090363327911305247/5142b1e3-3648-4e6b-85b4-d378ca3c7609.png';
 
-      var img3 = new Image(); //imagem que vai aparecer no bloco movel
+      var img3 = new Image(); //imagem 3 que vai aparecer no bloco movel (stand)
       img3.src = 'https://media.discordapp.net/attachments/404353366106570768/1090372111014580336/superman__render__2__by_yessing_dfmkzcr-fullview.png?width=355&height=514';
 
       var canvas = document.getElementById("canvas");
       var ctx = canvas.getContext("2d");
-      canvas.width = window.innerWidth;
+      canvas.width = window.innerWidth *2;
       canvas.height = window.innerHeight;
       
       var block = {
@@ -102,6 +104,12 @@ function getBlockColor() {
 }
       
       function updateBlock() {
+
+        if (block.x + block.width/2 > window.innerWidth/2) {
+  window.scrollTo(block.x + block.width/2 - window.innerWidth/2, 0);
+} else if (block.x - block.width/2 < window.innerWidth/2) {
+  window.scrollTo(block.x - window.innerWidth/2 + block.width/2, 0);
+}
     // movimentação horizontal
     if (keys[37]) {
         block.x -= block.speed;
