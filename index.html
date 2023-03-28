@@ -51,9 +51,24 @@
       });
       
       function drawBlock() {
-        ctx.fillStyle = "red";
-        ctx.fillRect(block.x, block.y, block.width, block.height);
-      }
+  var color = getBlockColor();
+  ctx.fillStyle = color;
+  ctx.fillRect(block.x, block.y, block.width, block.height);
+}
+
+function getBlockColor() {
+  if (keys[38] && block.jumping) { // seta para cima enquanto pula
+    return "green";
+  } else if (keys[40] && !block.jumping) { // seta para baixo enquanto nao pula
+    return "red";
+  } else if (keys[37] && !keys[39]) { // seta esquerda
+    return "black";
+  } else if (keys[39] && !keys[37]) { // seta direita
+    return "yellow";
+  } else { // em outro caso, fique vermelho
+    return "red";
+  }
+}
       
       function updateBlock() {
     // movimentação horizontal
@@ -128,6 +143,17 @@ for (var i = 0; i < platforms.length; i++) {
         }
     }
 }
+
+// mudança de cor
+if (block.jumping && !keys[37] && !keys[39]) {
+        ctx.fillStyle = "green";
+    } else if (!block.jumping && keys[37]) {
+        ctx.fillStyle = "yellow";
+    } else if (!block.jumping && keys[39]) {
+        ctx.fillStyle = "black";
+    } else if (!block.jumping && !keys[37] && !keys[39]) {
+        ctx.fillStyle = "red";
+    }
 
 }
       
