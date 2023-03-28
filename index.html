@@ -12,10 +12,20 @@
       canvas {
         display: block;
       }
+
+      #imagem {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      }
     </style>
   </head>
   <body>
     <canvas id="canvas"></canvas>
+    <img id="imagem" src="https://lojabdk.netlify.app/assets/media/logos/unnamed.png" style="display:none">
     <script>
       // JavaScript inline
       var canvas = document.getElementById("canvas");
@@ -117,6 +127,7 @@ for (var i = 0; i < platforms.length; i++) {
     if (detectCollision(block, platforms[i])) {
         var overlapX = Math.max(0, Math.min(block.x + block.width, platforms[i].x + platforms[i].width) - Math.max(block.x, platforms[i].x));
         var overlapY = Math.max(0, Math.min(block.y + block.height, platforms[i].y + platforms[i].height) - Math.max(block.y, platforms[i].y));
+        document.getElementById("imagem").style.display = "block";
         if (overlapX >= overlapY) {
             if (block.y < platforms[i].y) {
                 // Colisão superior
