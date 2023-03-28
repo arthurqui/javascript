@@ -28,6 +28,16 @@
     <img id="imagem" src="https://www.pcspecialist.ie/forums/attachments/8c8553fd-4717-4ed1-beb9-5d17dc4f8d91-gif.30456/" style="display:none">  <!--Imagem que vai aparecer no meio da tela-->
     <script>
       // JavaScript inline
+
+      var img = new Image(); //imagem que vai aparecer no bloco movel
+      img.src = 'https://media.discordapp.net/attachments/404353366106570768/1090347044532666398/7543d5ee-de97-4438-80b9-93852a99b3d3.png';
+
+      var img2 = new Image(); //imagem que vai aparecer no bloco movel
+      img2.src = 'https://media.discordapp.net/attachments/404353366106570768/1090363327911305247/5142b1e3-3648-4e6b-85b4-d378ca3c7609.png';
+
+      var img3 = new Image(); //imagem que vai aparecer no bloco movel
+      img3.src = 'https://media.discordapp.net/attachments/404353366106570768/1090372111014580336/superman__render__2__by_yessing_dfmkzcr-fullview.png?width=355&height=514';
+
       var canvas = document.getElementById("canvas");
       var ctx = canvas.getContext("2d");
       canvas.width = window.innerWidth;
@@ -55,16 +65,24 @@
       var keys = [];
       window.addEventListener("keydown", function(e) {
         keys[e.keyCode] = true;
-        document.getElementById("imagem").style.display = "none"; //comando que remove a imagem da tela
+        
       });
       window.addEventListener("keyup", function(e) {
         keys[e.keyCode] = false;
       });
       
       function drawBlock() {
-  var color = getBlockColor();
-  ctx.fillStyle = color;
-  ctx.fillRect(block.x, block.y, block.width, block.height);
+  if (keys[38] && block.jumping) {
+    ctx.drawImage(img, block.x, block.y, block.width, block.height);
+  } else if (keys[40] && !block.jumping) {
+    ctx.drawImage(img, block.x, block.y, block.width, block.height);
+  } else if (keys[37] && !keys[39]) {
+    ctx.drawImage(img2, block.x, block.y, block.width, block.height);
+  } else if (keys[39] && !keys[37]) {
+    ctx.drawImage(img, block.x, block.y, block.width, block.height);
+  } else {
+    ctx.drawImage(img3, block.x, block.y, block.width, block.height);
+  }
 }
 
 function getBlockColor() {
@@ -92,21 +110,26 @@ function getBlockColor() {
 
     // gravidade
     if (block.jumping) {
+        
         block.y -= block.jumpSpeed;
         if (block.y <= canvas.height - block.jumpHeight) {
             block.jumping = false;
+            
         }
     } else {
+      document.getElementById("imagem").style.display = "none"; //comando que remove a imagem da tela
         block.y += block.gravity;
         if (block.y + block.height >= canvas.height) {
             block.y = canvas.height - block.height;
             block.jumping = false;
+            
         }
     }
 
     // movimentação vertical
     if (keys[38] && !block.jumping) {
         block.jumping = true;
+        
     }
 
     // colisão nas laterais da tela
@@ -137,6 +160,7 @@ for (var i = 0; i < platforms.length; i++) {
                 if (keys[38]) { // Verifica se o bloco está pulando
                     block.y -= block.jumpSpeed;
                     block.jumping = true;
+                    document.getElementById("imagem").style.display = "none"; //comando que remove a imagem da tela
                     
                 } else {
                     block.y = platforms[i].y - block.height;
