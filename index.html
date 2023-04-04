@@ -11,6 +11,9 @@
         overflow: hidden;
       }
       canvas {
+        background: url('') repeat-x;
+        background-color: #ffffff;
+        background-size: auto 100%;
         display: block;
         overflow: hidden;
       }
@@ -28,6 +31,7 @@
   <body>
     <canvas id="canvas"></canvas>
     <img id="imagem" src="https://www.pcspecialist.ie/forums/attachments/8c8553fd-4717-4ed1-beb9-5d17dc4f8d91-gif.30456/" style="display:none">  <!--Imagem que vai aparecer no meio da tela-->
+    <img id="sol" src="https://cdn-icons-png.flaticon.com/512/4814/4814275.png" style="display:none">
     <script>
       // JavaScript inline
 
@@ -46,6 +50,13 @@
       canvas.height = window.innerHeight;
       var canvasWidth = canvas.width;
       var canvasHeight = canvas.height;
+
+      var sol = new Image();
+      sol.src = 'https://cdn-icons-png.flaticon.com/512/4814/4814275.png';
+      var solWidth = canvasWidth/10; // define a largura do sol
+      var solHeight = canvasHeight/3; // define a altura do sol
+      var solX = canvasWidth * 0.40; // define a posição horizontal do sol
+      var solY = canvasHeight * 0.01; // define a posição vertical do sol
       
       var block = {
         x: 10,
@@ -62,7 +73,7 @@
       
 
 var platforms = [
-  { x: canvasWidth * 0.3, y: canvasHeight * 0.2, width: canvasWidth * 0.1, height: canvasHeight * 0.8 },
+  { x: canvasWidth * 0.3, y: canvasHeight * 0.6, width: canvasWidth * 0.1, height: canvasHeight * 0.7 },
   { x: canvasWidth * 0.5, y: canvasHeight * 0.8, width: canvasWidth * 0.1, height: canvasHeight * 0.03 },
   { x: canvasWidth * 0.7, y: canvasHeight * 0.75, width: canvasWidth * 0.1, height: canvasHeight * 0.03 },
   { x: canvasWidth * 0.9, y: canvasHeight * 0.7, width: canvasWidth * 0.1, height: canvasHeight * 0.03 },
@@ -212,6 +223,16 @@ if (block.jumping && !keys[37] && !keys[39]) {
       
       function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // desenha o fundo
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // desenha o sol com efeito de paralaxe
+  var solOffsetX = window.pageXOffset;; // define a velocidade horizontal do sol
+  var solOffsetY = 0; // define a velocidade vertical do sol
+  ctx.drawImage(sol, solX + solOffsetX, solY + solOffsetY, solWidth, solHeight);
+
         drawBlock();
         updateBlock();
         drawPlatforms();
@@ -232,6 +253,8 @@ function detectCollision(rect1, rect2) {
 }
       
       setInterval(draw, 10);
+
+      
     </script>
   </body>
 </html>
